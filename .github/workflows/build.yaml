@@ -14,8 +14,9 @@ on:
       - build/*
 
 env:
-  DOCKER_REPO: shenxn/protonmail-bridge
-  DOCKER_REPO_DEV: ghcr.io/shenxn/protonmail-bridge-dev
+  DOCKER_ORG: richardneililagan
+  DOCKER_REPO: ${DOCKER_ORG}/protonmail-bridge
+  DOCKER_REPO_DEV: ghcr.io/${DOCKER_ORG}/protonmail-bridge-dev
   PLATFORMS: linux/amd64,linux/arm64/v8,linux/arm/v7,linux/riscv64
 
 jobs:
@@ -66,27 +67,27 @@ jobs:
         uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/master' }}
-        with:
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/dev' }}
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
-      - name: Push image
-        uses: docker/build-push-action@v2
-        with:
-          context: ./build
-          file: ./build/Dockerfile
-          platforms: ${{ env.PLATFORMS }}
-          tags: |
-            ${{ steps.repo.outputs.repo }}:build
-            ${{ steps.repo.outputs.repo }}:${{ steps.version.outputs.version }}-build
-          labels: ${{ steps.docker_meta.outputs.labels }}
-          push: ${{ github.event_name != 'pull_request' }}
+      # - name: Login to DockerHub
+      #   uses: docker/login-action@v1
+      #   if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/master' }}
+      #   with:
+      #     username: ${{ secrets.REGISTRY_USERNAME }}
+      #     password: ${{ secrets.REGISTRY_PASSWORD }}
+      # - name: Login to GitHub Container Registry
+      #   uses: docker/login-action@v1
+      #   if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/dev' }}
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.repository_owner }}
+      #     password: ${{ secrets.CR_PAT }}
+      # - name: Push image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: ./build
+      #     file: ./build/Dockerfile
+      #     platforms: ${{ env.PLATFORMS }}
+      #     tags: |
+      #       ${{ steps.repo.outputs.repo }}:build
+      #       ${{ steps.repo.outputs.repo }}:${{ steps.version.outputs.version }}-build
+      #     labels: ${{ steps.docker_meta.outputs.labels }}
+      #     push: ${{ github.event_name != 'pull_request' }}
