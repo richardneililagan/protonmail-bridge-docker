@@ -25,5 +25,6 @@ COPY gpgparams entrypoint.sh /protonmail/
 # Copy protonmail
 COPY --from=build /build/proton-bridge/bridge /protonmail/
 COPY --from=build /build/proton-bridge/proton-bridge /protonmail/
+COPY --from=build /build/proton-bridge/internal/constants/constants.go .
 
 ENTRYPOINT ["bash", "/protonmail/entrypoint.sh"]
