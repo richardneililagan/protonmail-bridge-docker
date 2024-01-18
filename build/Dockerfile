@@ -9,7 +9,6 @@ COPY build.sh VERSION /build/
 RUN bash build.sh
 
 FROM ubuntu:jammy
-LABEL maintainer="Xiaonan Shen <s@sxn.dev>"
 
 EXPOSE 25/tcp
 EXPOSE 143/tcp
@@ -25,6 +24,5 @@ COPY gpgparams entrypoint.sh /protonmail/
 # Copy protonmail
 COPY --from=build /build/proton-bridge/bridge /protonmail/
 COPY --from=build /build/proton-bridge/proton-bridge /protonmail/
-COPY --from=build /build/proton-bridge/internal/constants/constants.go .
 
 ENTRYPOINT ["bash", "/protonmail/entrypoint.sh"]

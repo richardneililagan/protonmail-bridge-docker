@@ -11,7 +11,7 @@ git checkout v$VERSION
 
 # @see https://github.com/shenxn/protonmail-bridge-docker/pull/78/files
 # @see https://github.com/shenxn/protonmail-bridge-docker/issues/72#issuecomment-1437542111
-sed -i 's/127.0.0.1/0.0.0.0/g' internal/constants/constants.go
+# sed -i 's/127.0.0.1/0.0.0.0/g' internal/constants/constants.go
 
 ARCH=$(uname -m)
 if [[ $ARCH == "armv7l" ]] ; then
